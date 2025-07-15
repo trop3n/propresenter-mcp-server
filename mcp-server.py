@@ -101,4 +101,19 @@ def trigger_macro_by_name(name: str) -> Dict[str, Any]:
     """
     # First, get all macros to find the ID for the given name
     macros_response = call_propresenter_api("/v1/macros")
+    if macros_response.get("status") == "error":
+        return macros_response
     
+    macro_id = None
+    for macro in macros_response:
+        if macro.get("name") == name:
+            macro_id = macro.get("id")
+            break
+    
+    if not macro_id:
+        return {"status": "error", "message": f"Macro with name '{name}' not found."}
+    
+    # Trigger the macro by its found ID
+    return call_propresenter_api(f"/v1/macro/{macro_id}/trigger", method="POST")
+
+# --- Main entry point to run the server ---
