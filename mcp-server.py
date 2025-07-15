@@ -126,5 +126,5 @@ if __name__ == '__main__':
 
     # Use uvicorn to run the FastAPI application
     # The MCP CLI will automatically find and run this.
-    # To run manually: uvicorn "script_name":mcp.app --reload
-    uvicorn.run(mcp.app, host="127.0.0.1", port=8000)
+    # To run manually: uvicorn "script_name":mcp --reload
+    uvicorn.run(mcp, host="127.0.0.1", port=8000)
