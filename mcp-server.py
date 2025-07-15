@@ -117,3 +117,14 @@ def trigger_macro_by_name(name: str) -> Dict[str, Any]:
     return call_propresenter_api(f"/v1/macro/{macro_id}/trigger", method="POST")
 
 # --- Main entry point to run the server ---
+if __name__ == '__main__':
+    import uvicorn
+    print("--- ProPresenter MCP Server ---")
+    print(f"Attempting to connect to ProPresenter at: {PROPRESENTER_API_URL}")
+    print("Set the PROPRESENTER_HOST and PROPRESENTER_PORT env variables to change the target.")
+    print("Server starting. Press CTRL+C to exit.")
+
+    # Use uvicorn to run the FastAPI application
+    # The MCP CLI will automatically find and run this.
+    # To run manually: uvicorn "script_name":mcp.app --reload
+    uvicorn.run(mcp.app, host="127.0.0.1", port=8000)
