@@ -59,3 +59,46 @@ def call_propresenter_api(endpoint: str, method: str = "GET") -> Dict[str, Any]:
         return {"status": "error", "message": f"An unexpected error occurred: {str(e)}"}
 
 # --- MCP Tool Definitions ---
+# Each function decorated with `@mcp.tool()` becomes a tool that an AI can use.
+# The docstring of the function is important, as it tells the AI what the tool does.
+
+@mcp.tool()
+def get_active_presentation_status() -> Dict[str, Any]:
+    """
+    Retrieves the status of the currently active presentation in ProPresenter.
+    This includes the presentation name, current slide index, and total number of slides.
+    """
+    return call_propresenter_api("/v1/presentation/active/status")
+
+@mcp.tool()
+def next_slide() -> Dict[str, Any]:
+    """
+    Triggers the next slide in the currently active ProPresenter presentation.
+    """
+    return call_propresenter_api("/v1/presentation/active/next", method="POST")
+
+@mcp.tool()
+def previous_slide() -> Dict[str, Any]:
+    """
+    Triggers the previous slide in the currently active ProPresenter presentation.
+    """
+    return call_propresenter_api("/v1/presentation/active/previous", method="POST")
+
+@mcp.tool()
+def clear_all() -> Dict[str, Any]:
+    """
+    Clears all layers in ProPresenter (slide, media, props, messages, etc.)
+    """
+    return call_propresenter_api("/v1/clear/all", method="POST")
+
+@mcp.tool()
+def trigger_macro_by_name(name: str) -> Dict[str, Any]:
+    """
+    Triggers a ProPresenter Macro by its exact name.
+    
+    Args:
+        name: The case-sensitive name of the macro to trigger.
+    """
+    # First, get all macros to find the ID for the given name
+    macros_response = call_propresenter_api("/v1/macros")
+    
