@@ -124,7 +124,7 @@ if __name__ == '__main__':
     print("Set the PROPRESENTER_HOST and PROPRESENTER_PORT env variables to change the target.")
     print("Server starting. Press CTRL+C to exit.")
 
-    # Use uvicorn to run the FastAPI application
-    # The MCP CLI will automatically find and run this.
-    # To run manually: uvicorn "script_name":mcp --reload
-    uvicorn.run(mcp, host="127.0.0.1", port=8000)
+    # Run Uvicorn by passing it the import string for the app.
+    # This is the most reliable way to run programmatically.
+    # It tells Uvicorn to find the file 'mcp-server.py' and use the object named 'mcp'.
+    uvicorn.run(app_string, host="127.0.0.1", port=8000, reload=True)
