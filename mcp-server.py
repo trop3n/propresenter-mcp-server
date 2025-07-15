@@ -116,15 +116,5 @@ def trigger_macro_by_name(name: str) -> Dict[str, Any]:
     # Trigger the macro by its found ID
     return call_propresenter_api(f"/v1/macro/{macro_id}/trigger", method="POST")
 
-# --- Main entry point to run the server ---
-if __name__ == '__main__':
-    import uvicorn
-    print("--- ProPresenter MCP Server ---")
-    print(f"Attempting to connect to ProPresenter at: {PROPRESENTER_API_URL}")
-    print("Set the PROPRESENTER_HOST and PROPRESENTER_PORT env variables to change the target.")
-    print("Server starting. Press CTRL+C to exit.")
-
-    # Run Uvicorn by passing it the import string for the app.
-    # This is the most reliable way to run programmatically.
-    # It tells Uvicorn to find the file 'mcp-server.py' and use the object named 'mcp'.
-    uvicorn.run(app_string, host="127.0.0.1", port=8000, reload=True)
+# The server is now intended to be run from the command line using the 'mcp' command,
+# so the __main__ block has been removed.
