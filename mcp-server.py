@@ -37,3 +37,25 @@ def call_propresenter_api(endpoint: str, method: str = "GET") -> Dict[str, Any]:
             # Construct the full URL for the API request
             full_url = f"{PROPRESENTER_API_URL}{endpoint}"
             print(f"Calling ProPresenter API: {method} {full_url}")
+
+            # Perform HTTP Request
+            response = client.request(method, full_url, timeout=5.0)
+
+            # Raise an exception if the request was unsuccessful (e.g., 404, 500)
+            response.raise_for_status()
+
+            # If the response has content, return it as JSON. Otherwise, return success.
+            if response.status_code == 204: # No content
+                return {"status": "success", "message": "Action completed."}
+            return response.json()
+
+    except httpx.RequestError as exc:
+        # Handle network-related erros (e.g., connection refused)
+        print(f"An error occurred while requesting {exc.request.url!r}.")
+        return {"status": "error", "message": f"An unexpected error occurred: {str(e)}"}
+    except Exception as e:
+        # Handle other potential errors
+        print(f"An unexpected error occurred: {e}")
+        return {"status": "error", "message": f"An unexpected error occurred: {str(e)}"}
+
+# --- MCP Tool Definitions ---
